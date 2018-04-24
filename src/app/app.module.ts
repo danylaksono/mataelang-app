@@ -4,8 +4,17 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
+
+import 'leaflet';
+
+
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
 
 @NgModule({
   declarations: [
@@ -24,7 +33,10 @@ import { HomePage } from '../pages/home/home';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    BackgroundGeolocation,
+    Geolocation,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    LocationTrackerProvider
   ]
 })
 export class AppModule {}
