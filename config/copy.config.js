@@ -20,7 +20,7 @@ module.exports = {
         dest: '{{BUILD}}'
     },
     copyLeafletCss: {
-        src: './node_modules/leaflet/dist/leaflet.css',
-        dest: '{{BUILD}}'
+        src: ['./node_modules/leaflet/dist/leaflet.css','./node_modules/leaflet/dist/images/**/*'],
+        dest: '{{BUILD}}/leaflet'
     }
 }

@@ -1,10 +1,9 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-//import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 import { LocationTrackerProvider } from '../../providers/location-tracker/location-tracker';
 
-declare var L;
-import 'leaflet';
+//import * as L from 'leaflet';
+import { icon, latLng, Layer, marker, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'page-home',
@@ -12,63 +11,68 @@ import 'leaflet';
 })
 export class HomePage {
 
-  @ViewChild('map') mapContainer: ElementRef;
-  map: any;
+  /*
+@ViewChild('map') mapContainer: ElementRef;
+map: any;
+*/
 
   constructor(
     public navCtrl: NavController,
-    //private backgroundGeolocation: BackgroundGeolocation,
     public locationTracker: LocationTrackerProvider
   ) {
+  } //constructor
 
-    /*
-    const config: BackgroundGeolocationConfig = {
-      desiredAccuracy: 10,
-      stationaryRadius: 20,
-      distanceFilter: 30,
-      debug: false, //  enable this hear sounds for background-geolocation life-cycle.
-      stopOnTerminate: false, // enable this to clear background location settings when the app terminates
-    };
+  start() {
+    this.locationTracker.startTracking();
+  }
+
+  stop() {
+    this.locationTracker.stopTracking();
+  }
 
 
-    this.backgroundGeolocation.configure(config)
-      .subscribe((location: BackgroundGeolocationResponse) => {
-        console.log(location);
-      }, (err) => {
-        console.log(err);
-      });
-      
-    this.backgroundGeolocation.start();
+  //ngx leaflet
+  LAYER_OSM = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: 'Open Street Map' });
 
-    */
+  options = {
+    layers: [this.LAYER_OSM],
+    zoom: 10,
+    center: latLng(-7.75623, 110.4103)
+  };
 
-    } //constructor
+  markers: Layer[] = [];
 
-    start(){
-      this.locationTracker.startTracking();
-    }
-   
-    stop(){
-      this.locationTracker.stopTracking();
-    }
-
-    ionViewDidEnter() {
-      this.loadMap();
-    }
-
-    loadMap() {
-      let promise = new Promise((resolve, reject) => {
-        this.map = L.map('map').setView([-7.75623,110.4103], 9);
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18, 
-          attributions: 'osm users'
-        }).addTo(this.map);
-        resolve();
+  addMarker() {
+    let newMarker = marker([this.locationTracker.lat, this.locationTracker.lng], {
+      icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: '../../build/leaflet/marker-icon.png',
+        shadowUrl: '../../build/leaflet/marker-shadow.png'
       })
-      return promise;
-    }
+    });
+  }
+
+  ionViewDidEnter() {
+    //this.loadMap();
+  }
 
 
-  
+  /*
+  loadMap() {
+    let promise = new Promise((resolve, reject) => {
+      this.map = L.map('map').setView([-7.75623, 110.4103], 9);
+      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attributions: 'osm users'
+      }).addTo(this.map);
+      resolve();
+    })
+    return promise;
+  }
+  */
+
+
+
 
 }

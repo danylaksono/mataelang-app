@@ -8,8 +8,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 import { Geolocation } from '@ionic-native/geolocation';
 
-import 'leaflet';
 
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 
 import { MyApp } from './app.component';
@@ -23,6 +23,7 @@ import { LocationTrackerProvider } from '../providers/location-tracker/location-
   ],
   imports: [
     BrowserModule,
+    LeafletModule.forRoot(),
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],

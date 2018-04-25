@@ -21,6 +21,7 @@
     "@angular/http": "5.2.10",
     "@angular/platform-browser": "5.2.10",
     "@angular/platform-browser-dynamic": "5.2.10",
+    "@asymmetrik/ngx-leaflet": "^3.0.2",
     "@ionic-native/background-geolocation": "^4.7.0",
     "@ionic-native/core": "4.7.0",
     "@ionic-native/geolocation": "^4.7.0",
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.9",
+    "@types/leaflet": "^1.2.7",
     "typescript": "~2.6.2"
   },
   "description": "An Ionic project",

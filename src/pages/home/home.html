@@ -8,21 +8,27 @@
 
 <ion-content padding>
   <div padding>
-    
+
   </div>
   <p>Current Latitude: {{locationTracker.lat}}</p>
   <p>Current Longitude: {{locationTracker.lng}}</p>
-  <div padding id="map" style="width:100%; height:100%;"></div>
+  <div padding style="width:100%; height:100%;"
+    class="map" 
+    leaflet 
+    [leafletOptions]="options"
+    [leafletLayers]="markers">
+
+  </div>
   <ion-fab bottom right>
     <button ion-fab mini (click)="start()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
   <ion-fab bottom left>
-      <button ion-fab mini (click)="stop()">
-        <ion-icon name="exit"></ion-icon>
-      </button>
-    </ion-fab>
+    <button ion-fab mini (click)="stop()">
+      <ion-icon name="exit"></ion-icon>
+    </button>
+  </ion-fab>
 
 
 
