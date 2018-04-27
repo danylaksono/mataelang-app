@@ -27,12 +27,13 @@ export class LocationTrackerProvider {
 
   ) {
 
-    console.log('Hello LocationTrackerProvider Provider');
+    //console.log('Hello LocationTrackerProvider Provider');
 
   }
 
   startTracking() {
     // Background Tracking
+    console.log('start background tracking');
 
     
     const config: BackgroundGeolocationConfig = {
@@ -75,7 +76,7 @@ export class LocationTrackerProvider {
     this.watch = this.geolocation.watchPosition(options).filter((p: any) => p.code === undefined)
     .subscribe((position: Geoposition) => {
 
-      console.log(position);
+     // console.log(position);
 
       // Run update inside of Angular's zone
       this.zone.run(() => {

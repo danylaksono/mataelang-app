@@ -15,6 +15,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
+import { DummyProvider } from '../providers/dummy/dummy';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { LocationTrackerProvider } from '../providers/location-tracker/location-
     BackgroundGeolocation,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    LocationTrackerProvider
+    LocationTrackerProvider,
+    DummyProvider
   ]
 })
 export class AppModule {}

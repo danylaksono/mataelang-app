@@ -1,35 +1,34 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Mataelang
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
+  <div padding style="width:100%; height:80%;" class="map" 
+  leaflet 
+  [leafletOptions]="options" 
+  [leafletLayers]="markers"
+  [leafletCenter]="center"
+  [leafletZoom]="zoom"
+  (leafletMapReady)="onMapReady($event)">
+    <ion-fab bottom center>
+      <button ion-fab mini (click)="toggleGeolocation()">
+        <ion-icon *ngIf="geolocate" name="add"></ion-icon>
+        <ion-icon *ngIf="!geolocate" name="home"></ion-icon>
+      </button>
+    </ion-fab>
+    
+
+  </div>
   <div padding>
-
+    <p>Current Latitude: {{locationTracker.lat}}</p>
+    <p>Current Longitude: {{locationTracker.lng}}</p>
+    <p>Zoom: {{dummy.dummyZoom}}</p>
   </div>
-  <p>Current Latitude: {{locationTracker.lat}}</p>
-  <p>Current Longitude: {{locationTracker.lng}}</p>
-  <div padding style="width:100%; height:100%;"
-    class="map" 
-    leaflet 
-    [leafletOptions]="options"
-    [leafletLayers]="markers">
-
-  </div>
-  <ion-fab bottom right>
-    <button ion-fab mini (click)="start()">
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </ion-fab>
-  <ion-fab bottom left>
-    <button ion-fab mini (click)="stop()">
-      <ion-icon name="exit"></ion-icon>
-    </button>
-  </ion-fab>
-
 
 
 </ion-content>

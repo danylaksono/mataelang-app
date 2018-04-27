@@ -1,78 +1,118 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
+import { NavController, LoadingController } from 'ionic-angular';
 import { LocationTrackerProvider } from '../../providers/location-tracker/location-tracker';
+import { DummyProvider } from '../../providers/dummy/dummy';
 
-//import * as L from 'leaflet';
-import { icon, latLng, Layer, marker, tileLayer } from 'leaflet';
+import * as L from 'leaflet';
+
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
+  providers:[LocationTrackerProvider]
 })
+
 export class HomePage {
 
-  /*
-@ViewChild('map') mapContainer: ElementRef;
-map: any;
-*/
+  // init declarations
+  geolocate = false;
+  options: any;
+  center = L.latLng(-7.75623, 110.4103);
+  mylat = this.locationTracker.lat;
+  mylng = this.locationTracker.lng;
+  zoom: number = 12;
 
+  // constructors
   constructor(
     public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
+    public zone: NgZone,
+    public changeDetector: ChangeDetectorRef,
+    public dummy: DummyProvider,
     public locationTracker: LocationTrackerProvider
+
   ) {
+    this.dummy.start();
+    console.log('constructor');
+    console.log('mylat', this.mylat);
+    let LAYER_OSM = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      { maxZoom: 18, attribution: 'Open Street Map' });
+    this.options = {
+      layers: [LAYER_OSM]
+      //zoom: 12,
+      //center: L.latLng(this.center.lat, this.center.lng)
+    };
+
+    this.start();
+
+    console.log(dummy.dummyZoom);
+
   } //constructor
 
-  start() {
+
+  public start() {
+    console.log('really start tarcking')
     this.locationTracker.startTracking();
+    
+    //this.center = L.latLng([this.locationTracker.lat, this.locationTracker.lng]);
+    
+
   }
 
-  stop() {
+  public stop() {
     this.locationTracker.stopTracking();
   }
 
+  onMapReady(map: L.Map) {
+    // Do stuff with map
+    console.log('map ready')
 
-  //ngx leaflet
-  LAYER_OSM = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: 'Open Street Map' });
+  }
 
-  options = {
-    layers: [this.LAYER_OSM],
-    zoom: 10,
-    center: latLng(-7.75623, 110.4103)
-  };
+  updatePos() {
+    console.log('updatepos');
+    console.log(this.dummy.dummyZoom);
+    console.log(this.locationTracker.lat, this.locationTracker.lng);
+    let myPoslat = this.locationTracker.lat;
+    let myPoslng = this.locationTracker.lng;
+    this.center = L.latLng([myPoslat, myPoslng]);
 
-  markers: Layer[] = [];
+  }
 
-  addMarker() {
-    let newMarker = marker([this.locationTracker.lat, this.locationTracker.lng], {
-      icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: '../../build/leaflet/marker-icon.png',
-        shadowUrl: '../../build/leaflet/marker-shadow.png'
-      })
-    });
+  ionViewDidLoad() {
+    //this.start();
+    console.log('did load');
+
   }
 
   ionViewDidEnter() {
-    //this.loadMap();
+    console.log('did enter');
+    this.updatePos();
+    //this.gpsLoader.present();
+    console.log(this.locationTracker.lat, this.locationTracker.lng);
+    //this.zone.run(() => {
+    //console.log(' zone');
+    this.center = L.latLng([this.locationTracker.lat, this.locationTracker.lng]);
+    this.changeDetector.detectChanges();
+    console.log(this.mylat);
+    //this.zoom = 8;
+    //});
   }
 
+  toggleGeolocation() {
+    if (this.geolocate) {
+      this.geolocate = false;
+      this.stop();
+    } else {
+      this.geolocate = true;
+      //this.start();
+      //this.zone.run(() => {
+        this.center = L.latLng([this.locationTracker.lat, this.locationTracker.lng]);
+        this.changeDetector.detectChanges();
+      //});
 
-  /*
-  loadMap() {
-    let promise = new Promise((resolve, reject) => {
-      this.map = L.map('map').setView([-7.75623, 110.4103], 9);
-      L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attributions: 'osm users'
-      }).addTo(this.map);
-      resolve();
-    })
-    return promise;
+      console.log(this.center);
+    }
   }
-  */
-
-
-
 
 }
